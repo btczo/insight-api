@@ -1,6 +1,6 @@
 'use strict';
 
-var BlockDb = require('../../lib/BlockDb').default();
+var BlockDb = require('../../lib/BlockDb');
 var height_needed = 180000;
 var bDb = BlockDb;
 

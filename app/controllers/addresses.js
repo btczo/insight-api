@@ -1,6 +1,6 @@
 const Address = require('../models/Address');
 const common = require('./common');
-const tDb = require('../../lib/TransactionDb').default();
+const tDb = require('../../lib/TransactionDb')
 const Promise = require('bluebird');
 const _ = require('lodash');
 
@@ -11,12 +11,12 @@ const getAddr = (req, res, next) => {
   try {
     const addr = req.param('addr');
     a = new Address(addr);
+    return a;
   } catch (e) {
-    common.handleErrors({
+    return common.handleErrors({
       message: `Invalid address: ${e.message}`,
       code: 1
     }, res, next);
-    return null;
   }
 }
 
@@ -49,7 +49,6 @@ const show = async (req, res, next) => {
       return res.jsonp(a.getObj());
     }
   } catch (e) {
-    console.log(e);
     common.handleErrors({
       message: `Invalid address: ${e.message}`,
       code: 1
@@ -66,7 +65,6 @@ const utxo = async (req, res, next) => {
       return res.jsonp(a.unspent);
     }
   } catch(e) {
-    console.log(e);
     common.handleErrors({
       message: `Invalid address: ${e.message}`,
       code: 1

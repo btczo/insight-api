@@ -1,7 +1,7 @@
 {
   "name": "digiexplorer-api",
   "description": "An open-source DigiByte blockchain API. The DigiExplorer API provides you with a convenient, powerful and simple way to query and broadcast data on the bitcoin network and build your own services with it.",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "author": {
     "name": "DigiByte Team",
     "email": "info@digibyte.io"
@@ -55,7 +55,7 @@
     "start": "node node_modules/grunt-cli/bin/grunt"
   },
   "dependencies": {
-    "async": "*",
+    "async": "3.2.0",
     "bitauth": "^0.1.1",
     "bluebird": "^3.7.2",
     "bufferput": "git://github.com/bitpay/node-bufferput.git",

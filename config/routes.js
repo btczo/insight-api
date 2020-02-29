@@ -15,8 +15,8 @@ module.exports = (app) => {
   app.get(apiPrefix + '/block/:blockHash', blocks.show);
   app.param('blockHash', blocks.block);
 
-  app.get(apiPrefix + '/block-index/:height', blocks.blockindex);
-  app.param('height', blocks.blockindex);
+  app.get(apiPrefix + '/block-index/:height', blocks.blockIndex);
+  app.param('height', blocks.blockIndex);
 
   // Transaction routes
   const transactions = require('../app/controllers/transactions');
@@ -29,10 +29,10 @@ module.exports = (app) => {
   const addresses = require('../app/controllers/addresses');
   app.get(apiPrefix + '/addr/:addr', addresses.show);
   app.get(apiPrefix + '/addr/:addr/utxo', addresses.utxo);
-  app.get(apiPrefix + '/addrs/:addrs/utxo', addresses.multiutxo);
-  app.post(apiPrefix + '/addrs/utxo', addresses.multiutxo);
-  app.get(apiPrefix + '/addrs/:addrs/txs', addresses.multitxs);
-  app.post(apiPrefix + '/addrs/txs', addresses.multitxs);
+  app.get(apiPrefix + '/addrs/:addrs/utxo', addresses.multiUtxo);
+  app.post(apiPrefix + '/addrs/utxo', addresses.multiUtxo);
+  app.get(apiPrefix + '/addrs/:addrs/txs', addresses.multiUtxo);
+  app.post(apiPrefix + '/addrs/txs', addresses.multiTxs);
 
   // Address property routes
   app.get(apiPrefix + '/addr/:addr/balance', addresses.balance);

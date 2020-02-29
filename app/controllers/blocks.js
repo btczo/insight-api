@@ -1,3 +1,4 @@
+const Promise = require('bluebird');
 const common = require('./common');
 const BlockDb = require('../../lib/BlockDb.js');
 const TransactionDb = require('../../lib/TransactionDb');
@@ -15,7 +16,7 @@ const block = async (req, res, next, hash) => {
     req.block = block.info;
     return next();
   } catch (e) {
-    return common.handleErrors(err, res);
+    return common.handleErrors(e, res);
   }
 }
 
@@ -86,7 +87,7 @@ const list = async (req, res) => {
       more = true;
       blockList.pop;
     }
-    const moreTs = lte;
+    let moreTs = lte;
     const allBlocks = await Promise.map(blockList, async (b) => {
       const info = await getBlock(b.hash);
       if (b.ts < moreTs) moreTs = b.ts;
@@ -118,12 +119,12 @@ const list = async (req, res) => {
         moreTs: moreTs,
       }
     });
-  } catch (e) {
+  } catch (err) {
     return common.handleErrors(err, res);
   }
 }
 
-module.export = {
+module.exports = {
   block,
   blockIndex,
   list,

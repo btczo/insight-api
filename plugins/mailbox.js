@@ -1,5 +1,5 @@
 var microtime = require('microtime');
-var mdb = require('../lib/MessageDb').default();
+var mdb = require('../lib/MessageDb');
 var logger = require('../lib/logger').logger;
 var preconditions = require('preconditions').singleton();
 

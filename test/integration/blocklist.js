@@ -9,7 +9,7 @@ var START_TS  = 1;
 var END_TS    = '1296688928~'; // 2/2/2011 23:23PM
 
 var assert  = require('assert'),
-  BlockDb     = require('../../lib/BlockDb').default();
+  BlockDb     = require('../../lib/BlockDb');
 
 var bDb;
 

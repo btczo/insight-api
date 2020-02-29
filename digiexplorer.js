@@ -1,20 +1,17 @@
+const config = require('./config/config');
 const express = require('express');
+const fs = require('fs');
+const http = require('http');
+const logger = require('./lib/logger').logger;
+const program = require('commander');
+const PeerSync = require('./lib/PeerSync');
+const HistoricSync = require('./lib/HistoricSync');
 
 //Set the node enviornment variable if not set before
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 program
   .version(config.version);
 
-console.log(`
-______ _____ _____ _____ _______   _____________ _     ___________ ___________ 
-|  _  \_   _|  __ \_   _|  ___\ \ / /  _  \ ___ \ |   |  _  | ___ \  ___| ___ \
-| | | | | | | |  \/ | | | |__  \ V /| | | | |_/ / |   | | | | |_/ / |__ | |_/ /
-| | | | | | | | __  | | |  __| /   \| | | |  __/| |   | | | |    /|  __||    / 
-| |/ / _| |_| |_\ \_| |_| |___/ /^\ \ |/ /| |   | |___\ \_/ / |\ \| |___| |\ \ 
-|___/  \___/ \____/\___/\____/\/   \/___/ \_|   \_____/\___/\_| \_\____/\_| \_|
-                                                                               
-${config.version}
-`);
 program.on('--help', () => {
   logger.info('\n# Configuration:\n\
 \tDIGIEXPLORER_NETWORK (Network): %s\n\
@@ -96,13 +93,15 @@ peerSync.historicSync = historicSync;
 
 const startHistorySync = async () => {
   try {
-    await historicSync.start();
+    await historicSync.start({});
     if (peerSync) peerSync.allowReorgs = true;
   } catch (e) {
-    const txt = `ABORTED with error: ${err.message}`;
-    console.log(`[historic_sync] ${txt}`);    
+    console.log(e)
+    console.log(`CRITICAL ERROR: ${e.message}`); 
+    process.exit(0);
   }
 }
+
 if (!config.disableHistoricSync) {
   startHistorySync();
 } else if (peerSync) peerSync.allowReorgs = true;

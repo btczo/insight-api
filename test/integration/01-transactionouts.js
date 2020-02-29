@@ -9,7 +9,7 @@ var should = require('chai');
 var assert          = require('assert'),
   fs              = require('fs'),
   util            = require('util'),
-  TransactionDb = require('../../lib/TransactionDb').default();
+  TransactionDb = require('../../lib/TransactionDb');
 
 var txItemsValid = JSON.parse(fs.readFileSync('test/integration/txitems.json'));
 var txDb;

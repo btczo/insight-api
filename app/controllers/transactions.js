@@ -1,11 +1,12 @@
 const Address = require('../models/Address');
-const async = require('async');
 const common = require('./common');
-const util = require('util');
 const Rpc = require('../../lib/Rpc');
+const Promise = require('bluebird');
 
-const tDb = require('../../lib/TransactionDb').default();
-const bdb = require('../../lib/BlockDb.js').default();
+const transactionDb = require('../../lib/TransactionDb');
+const blockDb = require('../../lib/BlockDb.js');
+const tDb = new transactionDb()
+const bDb = new blockDb();
 
 const send = async (req, res) => {
   try {
@@ -35,7 +36,7 @@ const transaction = async (req, res, next, txid) => {
     req.transaction = tx.info;
     return next();
   } catch (e) {
-    return common.handleErrors(err, res);
+    return common.handleErrors(e, res);
   }
 }
 
@@ -70,7 +71,7 @@ const list = async (req, res, next) => {
     let txLength;
     let txs;
     if (bId) {
-      const block = await bdb.fromHashWithInfo(bId);
+      const block = await bDb.fromHashWithInfo(bId);
       if (!block) {
         return res.status(404).send('Not found');
       }
@@ -82,7 +83,7 @@ const list = async (req, res, next) => {
       } else {
         txs = block.info.tx;
       }
-      const results = await Promise.mapSeries(txs, getTransaction);
+      const results = await Promise.map(txs, getTransaction);
       return res.jsonp({
         pagesTotal: pagesTotal,
         txs: results
@@ -102,7 +103,7 @@ const list = async (req, res, next) => {
       } else {
         txs = a.transactions;
       }
-      const results = Promise.mapSeries(txs, getTransaction);
+      const results = Promise.map(txs, getTransaction);
       return res.jsonp({
         pagesTotal: pagesTotal,
         txs: results
@@ -115,4 +116,11 @@ const list = async (req, res, next) => {
   } catch (e) {
     return res.status(404).send('Not found');
   }
+}
+
+module.exports = {
+  list,
+  send,
+  show,
+  transaction
 }

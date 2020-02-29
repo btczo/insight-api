@@ -1,4 +1,4 @@
-const status = require('../models/Status');
+const Status = require('../models/Status');
 const common = require('./common');
 
 const show = (req, res) => {
@@ -7,33 +7,33 @@ const show = (req, res) => {
   } else {
     const option = req.query.q;
     const statusObject = new Status();
-  }
 
-  const returnJsonp = (err) => {
-    if (err || ! statusObject) {
-      return common.handleErrors(err, res);
-    } else {
-      res.jsonp(statusObject);
+    const returnJsonp = (err) => {
+      if (err || ! statusObject) {
+        return common.handleErrors(err, res);
+      } else {
+        res.jsonp(statusObject);
+      }
+    };
+    switch(option) {
+      case 'getInfo':
+        statusObject.getInfo(returnJsonp);
+        break;
+      case 'getDifficulty':
+        statusObject.getDifficulty(returnJsonp);
+        break;
+      case 'getTxOutSetInfo':
+        statusObject.getTxOutSetInfo(returnJsonp);
+        break;
+      case 'getLastBlockHash':
+        statusObject.getLastBlockHash(returnJsonp);
+        break;
+      case 'getBestBlockHash':
+        statusObject.getBestBlockHash(returnJsonp);
+        break;
+      default:
+        res.status(400).send('Bad Request');
     }
-  };
-  switch(option) {
-    case 'getInfo':
-      statusObject.getInfo(returnJsonp);
-      break;
-    case 'getDifficulty':
-      statusObject.getDifficulty(returnJsonp);
-      break;
-    case 'getTxOutSetInfo':
-      statusObject.getTxOutSetInfo(returnJsonp);
-      break;
-    case 'getLastBlockHash':
-      statusObject.getLastBlockHash(returnJsonp);
-      break;
-    case 'getBestBlockHash':
-      statusObject.getBestBlockHash(returnJsonp);
-      break;
-    default:
-      res.status(400).send('Bad Request');
   }
 }
 

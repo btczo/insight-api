@@ -10,7 +10,7 @@ var TESTING_BLOCK = '000000000185678d3d7ecc9962c96418174431f93fe20bf216d55652724
 var
 assert = require('assert'),
   //  config      = require('../../config/config'),
-  BlockDb = require('../../lib/BlockDb').default();
+  BlockDb = require('../../lib/BlockDb');
 
 var bDb;
 

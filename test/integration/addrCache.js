@@ -7,7 +7,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 var assert = require('assert'),
   fs = require('fs'),
   Address = require('../../app/models/Address'),
-  TransactionDb = require('../../lib/TransactionDb').default(),
+  TransactionDb = require('../../lib/TransactionDb'),
   addrValid = JSON.parse(fs.readFileSync('test/integration/addr.json')),
   utxoValid = JSON.parse(fs.readFileSync('test/integration/utxo.json'));
 

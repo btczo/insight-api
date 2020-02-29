@@ -36,9 +36,7 @@ const sync = async () => {
     await historicSync.start(opts);
     await historicSync.close();
   } catch (e) {
-    console.log(e)
     console.log(`CRITICAL ERROR:`, historicSync.info());
-    console.log(e.message);
   }
 }
 sync()

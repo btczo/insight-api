@@ -1,4 +1,6 @@
 const digibyte = require('digibyte');
+const TransactionDb = require('../../lib/TransactionDb');
+const BlockDb = require('../../lib/BlockDb');
 const _ = require('lodash');
 
 class Address {
@@ -14,7 +16,6 @@ class Address {
     this.unspent = [];
 
     const a = new digibyte.Address(addrStr);
-    a.validate();
     this.addrStr = addrStr;
   }
 
@@ -124,8 +125,8 @@ class Address {
 
     // should collect txList from address?
     const txList = opts.txLimit === 0 ? null: [];
-    const tDb = TransactionDb;
-    const bDb = BlockDb;
+    const tDb = new TransactionDb();
+    const bDb = new BlockDb();
     const txOut = await tDb.fromAddr(this.addrStr, opts);
     await bDb.fillConfirmations(txOut);
     await tDb.cacheConfirmations(txOut);

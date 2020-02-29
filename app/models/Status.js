@@ -1,13 +1,20 @@
+const config = require('../../config/config');
+const blockDb = require('../../lib/BlockDb');
 const RpcClient = require('digibyted-rpc');
+const Promise = require('bluebird');
+const _ = require('lodash');
+
 const rpc = new RpcClient(config.digibyted);
+Promise.promisifyAll(rpc);
 
 class Status {
   async getInfo (next) {
     try {
-      const info = await rpc.getBlockchainInfo();
+      const info = await rpc.getBlockchainInfoAsync();
       this.info = info.result;
-      const networkInfo = await rpc.getNetworkInfo();
+      const networkInfo = await rpc.getNetworkInfoAsync();
       _.extend(this.info, _.extend(networkInfo.result));
+      return next();
     } catch (e) {
       return next(e);
     }
@@ -15,8 +22,9 @@ class Status {
 
   async getDifficulty (next) {
     try {
-      const df = await rpc.getDifficulty();
+      const df = await rpc.getDifficultyAsync();
       this.difficulty = df.result;
+      return next();
     } catch (e) {
       return next(err);
     }
@@ -24,8 +32,9 @@ class Status {
 
   async getTxOutSetInfo (next) {
     try {
-      const txOut = await rpc.getTxOutSetInfo();
+      const txOut = await rpc.getTxOutSetInfoAsync();
       this.txoutsetinfo = txOut.result;
+      return next();
     } catch (e) {
       return next(err);
     }
@@ -33,8 +42,9 @@ class Status {
 
   async getBestBlockHash (next) {
     try {
-      const bbh = await rpc.getBestBlockHash();
+      const bbh = await rpc.getBestBlockHashAsync();
       this.bestblockhash = bbh.result;
+      return next();
     } catch (e) {
       return next(err);
     }
@@ -42,14 +52,15 @@ class Status {
 
   async getLastBlockHash (next) {
     try {
-      const tip = await bDb.getTip();
-      this.syncTipHash = tip;
-      const bc = await rpc.getBlockCount();
-      const bh = await rpc.getBlockHash(bc.result);
-      that.lastblockhash = bh.result;
+      const bDb = new blockDb();
+      const { hash, height } = await bDb.getTip();
+      this.syncTipHash = hash;
+      const bc = await rpc.getBlockCountAsync();
+      const bh = await rpc.getBlockHashAsync(bc.result);
+      this.lastblockhash = bh.result;
       return next();
     } catch (e) {
-      return next(err);
+      return next(e);
     }
   }
 }

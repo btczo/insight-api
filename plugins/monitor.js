@@ -1,4 +1,4 @@
-const mdb = require('../lib/MessageDb').default();
+const mdb = require('../lib/MessageDb');
 const logger = require('../lib/logger').logger;
 const cron = require('cron');
 const CronJob = cron.CronJob;

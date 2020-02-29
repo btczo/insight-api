@@ -46,7 +46,7 @@ switch (process.env.NODE_ENV) {
 }
 
 const network = process.env.DIGIEXPLORER_NETWORK || 'testnet';
-let dataDir = process.env.DIGIEXPLORER_DATADIR;
+let dataDir = process.env.DIGIBYTED_DATADIR;
 const isWin = /^win/.test(process.platform);
 const isMac = /^darwin/.test(process.platform);
 const isLinux = /^linux/.test(process.platform);
