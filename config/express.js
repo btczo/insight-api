@@ -1,23 +1,19 @@
-'use strict';
-
 /**
  * Module dependencies.
  */
-var express = require('express');
-var config = require('./config');
-var path = require('path');
-var logger = require('../lib/logger').logger;
+const express = require('express');
+const config = require('./config');
+const path = require('path');
+const logger = require('../lib/logger').logger;
 
-module.exports = function(app, historicSync, peerSync) {
-
-
+module.exports = (app, historicSync, peerSync) => {
   //custom middleware
-  var setHistoric = function(req, res, next) {
+  const setHistoric = (req, res, next) => {
     req.historicSync = historicSync;
     next();
   };
 
-  var setPeer = function(req, res, next) {
+  const setPeer = (req, res, next) => {
     req.peerSync = peerSync;
     next();
   };
@@ -35,7 +31,7 @@ module.exports = function(app, historicSync, peerSync) {
   app.use(express.compress());
 
   if (config.enableEmailstore) {
-    var allowCopayCrossDomain = function(req, res, next) {
+    const allowCopayCrossDomain = (req, res, next) => {
       if ('OPTIONS' == req.method) {
         res.send(200);
         res.end();
@@ -47,12 +43,12 @@ module.exports = function(app, historicSync, peerSync) {
   }
 
   if (config.publicPath) {
-    var staticPath = path.normalize(config.rootPath + '/../' + config.publicPath);
+    const staticPath = path.normalize(config.rootPath + '/../' + config.publicPath);
     //IMPORTANT: for html5mode, this line must to be before app.router
     app.use(express.static(staticPath));
   }
 
-  app.use(function(req, res, next) {
+  app.use((req, res, next) => {
     app.locals.config = config;
     next();
   });
@@ -61,11 +57,11 @@ module.exports = function(app, historicSync, peerSync) {
   app.use(app.router);
 
   //Assume 404 since no middleware responded
-  app.use(function(req, res) {
+  app.use((req, res) => {
     res.status(404).jsonp({
       status: 404,
       url: req.originalUrl,
       error: 'Not found'
     });
-  });
-};
+  });  
+}

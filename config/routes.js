@@ -1,16 +1,14 @@
-'use strict';
-
 /**
  * Module dependencies.
  */
-var config = require('./config');
+const config = require('./config');
 
-module.exports = function(app) {
+module.exports = (app) => {
 
-  var apiPrefix = config.apiPrefix;
+  const apiPrefix = config.apiPrefix;
 
   //Block routes
-  var blocks = require('../app/controllers/blocks');
+  const blocks = require('../app/controllers/blocks');
   app.get(apiPrefix + '/blocks', blocks.list);
 
 
@@ -21,14 +19,14 @@ module.exports = function(app) {
   app.param('height', blocks.blockindex);
 
   // Transaction routes
-  var transactions = require('../app/controllers/transactions');
+  const transactions = require('../app/controllers/transactions');
   app.get(apiPrefix + '/tx/:txid', transactions.show);
   app.param('txid', transactions.transaction);
   app.get(apiPrefix + '/txs', transactions.list);
   app.post(apiPrefix + '/tx/send', transactions.send);
 
   // Address routes
-  var addresses = require('../app/controllers/addresses');
+  const addresses = require('../app/controllers/addresses');
   app.get(apiPrefix + '/addr/:addr', addresses.show);
   app.get(apiPrefix + '/addr/:addr/utxo', addresses.utxo);
   app.get(apiPrefix + '/addrs/:addrs/utxo', addresses.multiutxo);
@@ -43,19 +41,19 @@ module.exports = function(app) {
   app.get(apiPrefix + '/addr/:addr/unconfirmedBalance', addresses.unconfirmedBalance);
 
   // Status route
-  var st = require('../app/controllers/status');
+  const st = require('../app/controllers/status');
   app.get(apiPrefix + '/status', st.show);
 
   app.get(apiPrefix + '/sync', st.sync);
   app.get(apiPrefix + '/peer', st.peer);
 
   // Currency
-  var currency = require('../app/controllers/currency');
+  const currency = require('../app/controllers/currency');
   app.get(apiPrefix + '/currency', currency.index);
 
   // Email store plugin
   if (config.enableEmailstore) {
-    var emailPlugin = require('../plugins/emailstore');
+    const emailPlugin = require('../plugins/emailstore');
     app.post(apiPrefix + '/email/save', emailPlugin.save);
     app.get(apiPrefix + '/email/retrieve', emailPlugin.retrieve);
     app.post(apiPrefix + '/email/change_passphrase', emailPlugin.changePassphrase);
@@ -74,17 +72,17 @@ module.exports = function(app) {
 
   // Currency rates plugin
   if (config.enableCurrencyRates) {
-    var currencyRatesPlugin = require('../plugins/currencyrates');
+    const currencyRatesPlugin = require('../plugins/currencyrates');
     app.get(apiPrefix + '/rates/:code', currencyRatesPlugin.getRate);
   }
 
   // Address routes
-  var messages = require('../app/controllers/messages');
+  const messages = require('../app/controllers/messages');
   app.get(apiPrefix + '/messages/verify', messages.verify);
   app.post(apiPrefix + '/messages/verify', messages.verify);
 
   //Home route
-  var index = require('../app/controllers/index');
+  const index = require('../app/controllers/index');
   app.get(apiPrefix + '/version', index.version);
   app.get('*', index.render);
 };

@@ -19,7 +19,7 @@ module.exports = function(grunt) {
         tasks: ['markdown']
       },
       js: {
-        files: ['Gruntfile.js', 'insight.js', 'app/**/*.js'],
+        files: ['Gruntfile.js', 'digiexplorer.js', 'app/**/*.js'],
         options: {
           livereload: true,
         },
@@ -31,7 +31,7 @@ module.exports = function(grunt) {
     },
     jshint: {
       all: {
-        src: ['Gruntfile.js', 'insight.js', 'app/**/*.js', 'lib/*.js', 'config/*.js'],
+        src: ['Gruntfile.js', 'digiexplorer.js', 'app/**/*.js', 'lib/*.js', 'config/*.js'],
         options: {
           jshintrc: true
         }
@@ -41,11 +41,11 @@ module.exports = function(grunt) {
       options: {
         reporter: 'spec',
       },
-      src: ['test/**/*.js'],
+      src: ['test/lib/*.js'],
     },
     nodemon: {
       dev: {
-        script: 'insight.js',
+        script: 'digiexplorer.js',
         options: {
           args: [],
           ignore: ['test/**/*', 'util/**/*', 'dev-util/**/*'],

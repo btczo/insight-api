@@ -22,21 +22,12 @@ describe('TransactionDb fromIdWithInfo', function(){
   });
 
 
-  var txid = '7e621eeb02874ab039a8566fd36f4591e65eca65313875221842c53de6907d6c';
+  var txid = '5f6c5fc2c9f0f8a6b3a4e8e5a5d11a79ad95e6675e5d073850003c9eedfbdece';
   it('tx info ' + txid, function(done) {
     txDb.fromIdWithInfo(txid, function(err, tx) {
-
+      console.log(err)
       if (err) done(err);
-      assert.equal(tx.txid, txid);
-      assert(!tx.info.isCoinBase);
-
-      for(var i=0; i<20; i++) {
-        assert(parseFloat(tx.info.vin[i].value) === parseFloat(50), 'input '+i);
-      }
-
-
-      tx.info.vin[0].addr.should.equal('msGKGCy2i8wbKS5Fo1LbWUTJnf1GoFFG59');
-      tx.info.vin[1].addr.should.equal('mfye7oHsdrHbydtj4coPXCasKad2eYSv5P');
+      tx.info.vin[0].addr.should.equal('sju95DMmdu8uyUiGxZRJrG8Cs9y8jfKCbS');
       done();
     });
   });

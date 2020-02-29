@@ -4,7 +4,7 @@ var chai = require('chai');
 var assert = require('assert');
 var sinon = require('sinon');
 var crypto = require('crypto');
-var bitcore = require('bitcore');
+var bitcore = require('digibyte');
 var logger = require('../lib/logger').logger;
 var should = chai.should;
 var expect = chai.expect;
@@ -67,7 +67,7 @@ describe('emailstore test', function() {
 
     describe('exists', function() {
       var fakeEmail = 'fake@email.com';
-      var fakeEmailKey = 'email-to-passphrase-' + bitcore.util.twoSha256(fakeEmail).toString('hex');
+      var fakeEmailKey = 'email-to-passphrase-' + bitcore.crypto.Hash.sha256sha256(Buffer.from(fakeEmail)).toString('hex');
 
       beforeEach(function() {
         leveldb_stub.get.reset();
@@ -172,7 +172,7 @@ describe('emailstore test', function() {
       var fakeEmail = 'fake@email.com';
       var fakeKey = 'nameForData';
       var fakeRecord = 'fakeRecord';
-      var expectedKey = 'emailstore-' + bitcore.util.twoSha256(fakeEmail + '#' + fakeKey).toString('hex');
+      var expectedKey = 'emailstore-' + bitcore.crypto.Hash.sha256sha256(Buffer.from(fakeEmail + '#' + fakeKey)).toString('hex');
 
       beforeEach(function() {
         leveldb_stub.get.reset();

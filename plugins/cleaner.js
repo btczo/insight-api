@@ -1,22 +1,21 @@
-var mdb = require('../lib/MessageDb').default();
-var logger = require('../lib/logger').logger;
-var preconditions = require('preconditions').singleton();
-var microtime = require('microtime');
-var cron = require('cron');
-var CronJob = cron.CronJob;
+const mdb = require('../lib/MessageDb').default();
+const logger = require('../lib/logger').logger;
+const microtime = require('microtime');
+const cron = require('cron');
+const CronJob = cron.CronJob;
 
 
-module.exports.init = function(config) {
-  var cronTime = config.cronTime || '0 * * * *';
+module.exports.init = (config) => {
+  const cronTime = config.cronTime || '0 * * * *';
   logger.info('Using cleaner plugin with cronTime ' + cronTime);
-  var onTick = function() {
-    var limit = microtime.now() - 1000 * 1000 * config.threshold;
-    mdb.removeUpTo(limit, function(err, n) {
+  const onTick = () => {
+    const limit = microtime.now() - 1000 * 1000 * config.threshold;
+    mdb.removeUpTo(limit, (err, n) => {
       if (err) logger.error(err);
       else logger.info('Ran cleaner task, removed ' + n);
     });
   };
-  var job = new CronJob({
+  const job = new CronJob({
     cronTime: cronTime,
     onTick: onTick
   });

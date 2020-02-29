@@ -7,7 +7,7 @@
 
   var _ = require('lodash');
   var async = require('async');
-  var bitcore = require('bitcore');
+  var bitcore = require('digibyte');
   var crypto = require('crypto');
   var fs = require('fs');
   var levelup = require('levelup');
@@ -75,12 +75,12 @@
   var POST_LIMIT = 1024 * 300 /* Max POST 300 kb */ ;
 
   var valueKey = function(email, key) {
-    return STORED_VALUE + bitcore.util.twoSha256(email + SEPARATOR + key).toString('hex');
+    return STORED_VALUE + bitcore.crypto.Hash.sha256sha256(email + SEPARATOR + key).toString('hex');
   };
 
 
   var countKey = function(email) {
-    return ITEMS_COUNT + bitcore.util.twoSha256(email).toString('hex');
+    return ITEMS_COUNT + bitcore.crypto.Hash.sha256sha256(email).toString('hex');
   };
 
   var pendingKey = function(email) {
@@ -88,11 +88,11 @@
   };
 
   var validatedKey = function(email) {
-    return VALIDATED + bitcore.util.twoSha256(email).toString('hex');
+    return VALIDATED + bitcore.crypto.Hash.sha256sha256(email).toString('hex');
   };
 
   var emailToPassphrase = function(email) {
-    return EMAIL_TO_PASSPHRASE + bitcore.util.twoSha256(email).toString('hex');
+    return EMAIL_TO_PASSPHRASE + bitcore.crypto.Hash.sha256sha256(email).toString('hex');
   };
 
   /**
@@ -114,7 +114,7 @@
     emailPlugin.crypto = config.crypto || crypto;
 
     emailPlugin.confirmUrl = (
-      process.env.INSIGHT_EMAIL_CONFIRM_HOST || config.confirmUrl || 'https://digiexplorer.info'
+      process.env.DIGIEXPLORER_EMAIL_CONFIRM_HOST || config.confirmUrl || 'https://digiexplorer.info'
     ) + globalConfig.apiPrefix + '/email/validate';
 
     emailPlugin.redirectUrl = (

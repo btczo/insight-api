@@ -1,166 +1,118 @@
-'use strict';
+const Address = require('../models/Address');
+const async = require('async');
+const common = require('./common');
+const util = require('util');
+const Rpc = require('../../lib/Rpc');
 
-/**
- * Module dependencies.
- */
-var Address     = require('../models/Address');
-var async       = require('async');
-var common      = require('./common');
-var util        = require('util');
+const tDb = require('../../lib/TransactionDb').default();
+const bdb = require('../../lib/BlockDb.js').default();
 
-var Rpc           = require('../../lib/Rpc');
-
-var tDb = require('../../lib/TransactionDb').default();
-var bdb = require('../../lib/BlockDb').default();
-
-exports.send = function(req, res) {
-  Rpc.sendRawTransaction(req.body.rawtx, function(err, txid) {
-    if (err) {
-      var message;
-      if(err.code == -25) {
-        message = util.format(
-          'Generic error %s (code %s)',
-          err.message, err.code);
-      } else if(err.code == -26) {
-        message = util.format(
-          'Transaction rejected by network (code %s). Reason: %s',
-          err.code, err.message);
+const send = async (req, res) => {
+  try {
+    const txid = await Rpc.sendRawTransaction(req.body.rawtx);
+    return res.json({ txid });
+  } catch (e) {
+    if (e) {
+      let message;
+      if (e.code == -25) {
+        message = `Generic error ${e.message} (code ${e.code})`;
+      } else if (err.code == -26) {
+        message = `Transaction rejected by network (code ${e.code}). Reason: ${e.message}`;
       } else {
-        message = util.format('%s (code %s)', err.message, err.code);
+        message = `${e.message} (code ${e.code})`;
       }
       return res.status(400).send(message);
     }
-    res.json({'txid' : txid});
-  });
-};
-
+  }
+}
 
 /**
  * Find transaction by hash ...
  */
-exports.transaction = function(req, res, next, txid) {
-
-  tDb.fromIdWithInfo(txid, function(err, tx) {
-    if (err || ! tx)
-      return common.handleErrors(err, res);
-    else {
-      req.transaction = tx.info;
-      return next();
-    }
-  });
-};
-
+const transaction = async (req, res, next, txid) => {
+  try {
+    const tx = await tDb.fromIdWithInfo(txid);
+    req.transaction = tx.info;
+    return next();
+  } catch (e) {
+    return common.handleErrors(err, res);
+  }
+}
 
 /**
  * Show transaction
  */
-exports.show = function(req, res) {
-
+const show = (req, res) => {
   if (req.transaction) {
     res.jsonp(req.transaction);
+  }  
+}
+
+const getTransaction = async (txid) => {
+  const tx = await tDb.fromIdWithInfo(txid);
+  if (!tx.info) {
+    console.log(`[transactions.js.48]:: TXid ${txid} not found in RPC. CHECK THIS.`);
+    return new Error({ txid: txid });
   }
-};
-
-
-var getTransaction = function(txid, cb) {
-
-  tDb.fromIdWithInfo(txid, function(err, tx) {
-    if (err) console.log(err);
-
-    if (!tx || !tx.info) {
-      console.log('[transactions.js.48]:: TXid %s not found in RPC. CHECK THIS.', txid);
-      return ({ txid: txid });
-    }
-
-    return cb(null, tx.info);
-  });
-};
-
+  return tx.info;
+}
 
 /**
  * List of transaction
  */
-exports.list = function(req, res, next) {
-  var bId = req.query.block;
-  var addrStr = req.query.address;
-  var page = req.query.pageNum;
-  var pageLength = 10;
-  var pagesTotal = 1;
-  var txLength;
-  var txs;
-
-  if (bId) {
-    bdb.fromHashWithInfo(bId, function(err, block) {
-      if (err) {
-        console.log(err);
-        return res.status(500).send('Internal Server Error');
-      }
-
-      if (! block) {
+const list = async (req, res, next) => {
+  try  {
+    const bId = req.query.block;
+    const addrStr = req.query.address;
+    const page = req.query.pageNum;
+    let pageLength = 10;
+    let pagesTotal = 1;
+    let txLength;
+    let txs;
+    if (bId) {
+      const block = await bdb.fromHashWithInfo(bId);
+      if (!block) {
         return res.status(404).send('Not found');
       }
-
       txLength = block.info.tx.length;
-
       if (page) {
-        var spliceInit = page * pageLength;
+        const spliceInit = page * pageLength;
         txs = block.info.tx.splice(spliceInit, pageLength);
         pagesTotal = Math.ceil(txLength / pageLength);
-      }
-      else {
+      } else {
         txs = block.info.tx;
       }
-
-      async.mapSeries(txs, getTransaction, function(err, results) {
-        if (err) {
-          console.log(err);
-          res.status(404).send('TX not found');
-        }
-
-        res.jsonp({
-          pagesTotal: pagesTotal,
-          txs: results
-        });
-      });
-    });
-  }
-  else if (addrStr) {
-    var a = new Address(addrStr);
-
-    a.update(function(err) {
-      if (err && !a.totalReceivedSat) {
-        console.log(err);
+      const results = await Promise.mapSeries(txs, getTransaction);
+      return res.jsonp({
+        pagesTotal: pagesTotal,
+        txs: results
+      });    
+    } else if (addrStr) {
+      const a = new Address(addrStr);
+      await a.update();
+      if (!a.totalReceivedSat) {
         res.status(404).send('Invalid address');
-        return next();
+        return next();      
       }
-
       txLength = a.transactions.length;
-
       if (page) {
-        var spliceInit = page * pageLength;
+        const spliceInit = page * pageLength;
         txs = a.transactions.splice(spliceInit, pageLength);
         pagesTotal = Math.ceil(txLength / pageLength);
-      }
-      else {
+      } else {
         txs = a.transactions;
       }
-
-      async.mapSeries(txs, getTransaction, function(err, results) {
-        if (err) {
-          console.log(err);
-          res.status(404).send('TX not found');
-        }
-
-        res.jsonp({
-          pagesTotal: pagesTotal,
-          txs: results
-        });
+      const results = Promise.mapSeries(txs, getTransaction);
+      return res.jsonp({
+        pagesTotal: pagesTotal,
+        txs: results
       });
-    });
+    } else {
+      return res.jsonp({
+        txs: []
+      });
+    }
+  } catch (e) {
+    return res.status(404).send('Not found');
   }
-  else {
-    res.jsonp({
-      txs: []
-    });
-  }
-};
+}

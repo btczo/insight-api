@@ -1,26 +1,27 @@
-'use strict';
+const config = require('../../config/config');
 
-var config = require('../../config/config');
-
-var _getVersion = function() {
+const _getVersion = () => {
   var pjson = require('../../package.json');
   return pjson.version;
 };
 
-exports.render = function(req, res) {
-
+const render = (req, res) => {
   if (config.publicPath) {
     return res.sendfile(config.publicPath + '/index.html');
+  } else {
+    const version = _getVersion();
+    res.send('digiexplorer API v' + version);
   }
-  else {
-    var version = _getVersion();
-    res.send('insight API v' + version);
-  }
-};
+}
 
-exports.version = function(req, res) {
+const version = (req, res) => {
   var version = _getVersion();
   res.json({
     version: version
-  });
-};
+  }); 
+}
+
+module.exports = {
+  render,
+  version
+}

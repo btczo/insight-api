@@ -1,27 +1,24 @@
-'use strict';
+const common = require('./common');
+const Rpc = require('../../lib/Rpc');
 
-var common = require('./common');
-var Rpc = require('../../lib/Rpc');
-
-
-exports.verify = function(req, res) {
-  var address = req.param('address'),
-      signature = req.param('signature'),
-      message = req.param('message');
-
-  if(typeof(address) == 'undefined'
-        || typeof(signature) == 'undefined'
-        || typeof(message) == 'undefined') {
-    return common.handleErrors({
-      message: 'Missing parameters (expected "address", "signature" and "message")',
-      code: 1
-    }, res);
-  }
-
-  Rpc.verifyMessage(address, signature, message, function(err, result) {
-    if (err) {
-      return common.handleErrors(err, res);
+const verify = async (req, res) => {
+  try {
+    const address = req.param('address');
+    const signature = req.param('signature');
+    const message = req.param('message');
+    if(typeof(address) == 'undefined' || typeof(signature) == 'undefined' || typeof(message) == 'undefined') {
+      return common.handleErrors({
+        message: 'Missing parameters (expected "address", "signature" and "message")',
+        code: 1
+      }, res);    
     }
-    res.json({'result' : result});
-  });
-};
+    const result = await Rpc.verifyMessage(address, signature, message);
+    res.json({ result });
+  } catch (e) {
+    return common.handleErrors(e, res);
+  }
+}
+
+module.exports = {
+  verify
+}

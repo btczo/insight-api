@@ -1,73 +1,73 @@
-'use strict';
+const digibyte = require('digibyte');
+const util = digibyte.util;
+const logger = require('../../lib/logger').logger;
 
-// server-side socket behaviour
-var ios = null; // io is already taken in express
-var util = require('bitcore').util;
-var logger = require('../../lib/logger').logger;
+let ios = null;
 
-module.exports.init = function(io_ext) {
+const init = (io_ext) => {
   ios = io_ext;
   if (ios) {
     // when a new socket connects
-    ios.sockets.on('connection', function(socket) {
-      logger.verbose('New connection from ' + socket.id);
+    ios.sockets.on('connection', (socket) => {
+      logger.verbose(`New connection from ${socket.id}`);
       // when it subscribes, make it join the according room
-      socket.on('subscribe', function(topic) {
-        logger.debug('subscribe to ' + topic);
+      socket.on('subscribe', (topic) => {
+        logger.debug(`subscribe to ${topic}`);
         socket.join(topic);
         socket.emit('subscribed');
       });
 
       // disconnect handler
-      socket.on('disconnect', function() {
-        logger.verbose('disconnected ' + socket.id);
+      socket.on('disconnect', () => {
+        logger.verbose(`disconnected ${socket.id}`);
       });
-
     });
   }
-  return ios;
-};
+  return ios;  
+}
 
-var simpleTx = function(tx) {
+const simpleTx = (tx) => {
   return {
     txid: tx
-  };
-};
+  };  
+}
 
-var fullTx = function(tx) {
-  var t = {
+const fullTx = (tx) => {
+  const t = {
     txid: tx.txid,
-    size: tx.size,
+    size: tx.size,    
   };
-  // Outputs
-  var valueOut = 0;
-  tx.vout.forEach(function(o) {
+  let valueOut = 0;
+  tx.vout.forEach((o) => {
     valueOut += o.valueSat;
   });
-
-  t.valueOut = (valueOut.toFixed(8) / util.COIN);
+  t.valueOut = digibyte.Unit.fromSatoshis(valueOut).toDGB();
   return t;
-};
+}
 
-module.exports.broadcastTx = function(tx) {
+const broadcastTx = (tx) => {
   if (ios) {
-    var t = (typeof tx === 'string') ? simpleTx(tx) : fullTx(tx);
+    const t = (typeof tx === 'string') ? simpleTx(tx) : fullTx(tx);
     ios.sockets.in('inv').emit('tx', t);
-  }
-};
+  }  
+}
 
-module.exports.broadcastBlock = function(block) {
-  if (ios)
-    ios.sockets.in('inv').emit('block', block);
-};
+const broadcastBlock = (block) => {
+  if (ios) ios.sockets.in('inv').emit('block', block);
+}
 
-module.exports.broadcastAddressTx = function(txid, address) {
-  if (ios) {
-    ios.sockets.in(address).emit(address, txid);
-  }
-};
+const broadcastAddressTx = (txid, address) => {
+  if (ios) ios.sockets.in(address).emit(address, txid);
+}
 
-module.exports.broadcastSyncInfo = function(historicSync) {
-  if (ios)
-    ios.sockets.in('sync').emit('status', historicSync);
-};
+const broadcastSyncInfo = (historicSync) => {
+  if (ios) ios.sockets.in('sync').emit('status', historicSync);
+}
+
+module.exports = {
+  broadcastAddressTx,
+  broadcastBlock,
+  broadcastTx,
+  broadcastSyncInfo,
+  init
+}
