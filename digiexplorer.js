@@ -103,7 +103,12 @@ const startHistorySync = async () => {
 }
 
 if (!config.disableHistoricSync) {
+  const sync = async () => setTimeout(async () => {
+    startHistorySync();
+    sync();
+  }, 60000);
   startHistorySync();
+  sync();
 } else if (peerSync) peerSync.allowReorgs = true;
 
 

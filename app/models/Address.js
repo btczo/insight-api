@@ -1,4 +1,5 @@
 const digibyte = require('digibyte');
+const config = require('../../config/config');
 const TransactionDb = require('../../lib/TransactionDb');
 const BlockDb = require('../../lib/BlockDb');
 const _ = require('lodash');
@@ -140,7 +141,7 @@ class Address {
           vout: x.index,
           ts: x.ts,
           scriptPubKey: x.scriptPubKey,
-          amount: x.value_sat / BitcoreUtil.COIN,
+          amount: digibyte.Unit.fromSatoshis(x.value_sat).toDGB(),
           confirmations: x.isConfirmedCached ? (config.safeConfirmations) : x.confirmations,
           confirmationsFromCache: !!x.isConfirmedCached,
         };

@@ -78,18 +78,13 @@ const multiUtxo = async (req, res, next) => {
     var as = getAddrs(req, res, next);
     if (as) {
       var utxos = [];
-      async.each(as, function(a, callback) {
-        a.update(function(err) {
-          if (err) callback(err);
-          utxos = utxos.concat(a.unspent);
-          callback();
-        }, { onlyUnspent: 1, ignoreCache: req.param('noCache')});
-      }, function(err) { // finished callback
-        if (err) return common.handleErrors(err, res);
-        res.jsonp(utxos);
+      await Promise.each(as, async (a) => {
+        await a.update({ onlyUnspent: 1, ignoreCache: req.param('noCache')});
+        utxos = utxos.concat(a.unspent);
       });
+      res.jsonp(utxos);
     }
-  } catch (e) {
+  } catch (err) {
     return common.handleErrors(err, res);
   }
 }

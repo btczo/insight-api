@@ -88,7 +88,7 @@ const list = async (req, res) => {
       blockList.pop;
     }
     let moreTs = lte;
-    const allBlocks = await Promise.map(blockList, async (b) => {
+    const allBlocks = await Promise.mapSeries(blockList, async (b) => {
       const info = await getBlock(b.hash);
       if (b.ts < moreTs) moreTs = b.ts;
       return {
@@ -100,12 +100,13 @@ const list = async (req, res) => {
         poolInfo: info.poolInfo,
         algo: info.pow_algo
       };
-    });
-    allBlocks.sort(function compare(a, b) {
+    }, { concurrency: 10 });
+    const compare = (a, b) => {
       if (a.height < b.height) return 1;
       if (a.height > b.height) return -1;
-      return 0;      
-    });
+      return 0;         
+    }
+    allBlocks.sort(compare);
     return res.jsonp({
       blocks: allBlocks,
       length: allBlocks.length,
@@ -120,6 +121,7 @@ const list = async (req, res) => {
       }
     });
   } catch (err) {
+    console.log(err);
     return common.handleErrors(err, res);
   }
 }
