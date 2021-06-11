@@ -1,5 +1,5 @@
-const digibyte = require('digibyte');
-const util = digibyte.util;
+const but = require('but');
+const util = but.util;
 const logger = require('../../lib/logger').logger;
 
 let ios = null;
@@ -41,7 +41,7 @@ const fullTx = (tx) => {
   tx.vout.forEach((o) => {
     valueOut += o.valueSat;
   });
-  t.valueOut = digibyte.Unit.fromSatoshis(valueOut).toDGB();
+  t.valueOut = but.Unit.fromSatoshis(valueOut).toBUT();
   return t;
 }
 

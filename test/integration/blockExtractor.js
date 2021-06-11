@@ -8,8 +8,8 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 var assert        = require('assert'),
   config          = require('../../config/config'),
   BlockExtractor  = require('../../lib/BlockExtractor'),
-  networks        = require('digibyte').Networks,
-  util            =  require('digibyte').util;
+  networks        = require('but').Networks,
+  util            =  require('but').util;
 
 var should = require('chai');
 //var txItemsValid = JSON.parse(fs.readFileSync('test/model/txitems.json'));

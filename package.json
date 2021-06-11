@@ -1,12 +1,12 @@
 {
-  "name": "digiexplorer-api",
-  "description": "An open-source DigiByte blockchain API. The DigiExplorer API provides you with a convenient, powerful and simple way to query and broadcast data on the bitcoin network and build your own services with it.",
+  "name": "butexplorer-api",
+  "description": "An open-source ButByte blockchain API. The ButExplorer API provides you with a convenient, powerful and simple way to query and broadcast data on the bitcoin network and build your own services with it.",
   "version": "0.4.0",
   "author": {
-    "name": "DigiByte Team",
-    "email": "info@digibyte.io"
+    "name": "Butkoin Team",
+    "email": "info@butcoin.tech"
   },
-  "repository": "git@github.com:DigiByte-Core/digiexplorer-api.git",
+  "repository": "git@github.com:ButKoin/butkexplorer-api.git",
   "contributors": [
     {
       "name": "Matias Alejo Garcia",
@@ -34,13 +34,13 @@
     }
   ],
   "bugs": {
-    "url": "https://github.com/DigiByte-Core/digiexplorer-api/issues"
+    "url": "https://github.com/ButKoin/butkexplorer-api/issues"
   },
-  "homepage": "https://github.com/DigiByte-Core/digiexplorer-api.git",
+  "homepage": "https://github.com/ButKoin/butkexplorer-api.git",
   "license": "MIT",
   "keywords": [
-    "digiexplorer",
-    "digiexplorer api",
+    "butexplorer",
+    "butexplorer api",
     "blockchain",
     "bitcoin api",
     "blockchain api",
@@ -50,7 +50,7 @@
   "engines": {
     "node": "*"
   },
-  "bin": "digiexplorer.js",
+  "bin": "butexplorer.js",
   "scripts": {
     "start": "node node_modules/grunt-cli/bin/grunt"
   },
@@ -62,9 +62,9 @@
     "commander": "^2.3.0",
     "connect-ratelimit": "git://github.com/dharmafly/connect-ratelimit.git#0550eff209c54f35078f46445000797fa942ab97",
     "cron": "^1.0.4",
-    "digibyte": "^0.15.8",
-    "digibyte-p2p": "^5.0.3",
-    "digibyted-rpc": "git://github.com/digicontributer/digibyted-rpc.git",
+    "but": "^0.15.8",
+    "but-p2p": "^5.0.3",
+    "butd-rpc": "git://github.com/btczo/butd-rpc.git",
     "express": "~3.4.7",
     "glob": "*",
     "level": "^5.0.1",

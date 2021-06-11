@@ -15,7 +15,7 @@ module.exports.init = function(ext_io, config) {
       logger.debug('    from timestamp ' + ts);
       var rooms = socket.rooms;
       if (rooms.length !== 2) {
-        socket.emit('digiexplorer-error', 'Must subscribe with public key before syncing');
+        socket.emit('butexplorer-error', 'Must subscribe with public key before syncing');
         return;
       }
       var to = rooms[1];

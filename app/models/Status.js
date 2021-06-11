@@ -1,10 +1,10 @@
 const config = require('../../config/config');
 const blockDb = require('../../lib/BlockDb');
-const RpcClient = require('digibyted-rpc');
+const RpcClient = require('butd-rpc');
 const Promise = require('bluebird');
 const _ = require('lodash');
 
-const rpc = new RpcClient(config.digibyted);
+const rpc = new RpcClient(config.butd);
 Promise.promisifyAll(rpc);
 
 class Status {

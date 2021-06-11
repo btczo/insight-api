@@ -1,31 +1,31 @@
-# *digiexplorer API*
+# *butexplorer API*
 
-*digiexplorer API* is an open-source digibyte blockchain REST
-and websocket API. DigiExplorer API runs in NodeJS and uses LevelDB for storage. 
+*butexplorer API* is an open-source but blockchain REST
+and websocket API. ButExplorer API runs in NodeJS and uses LevelDB for storage. 
 
 This is a backend-only service. If you're looking for the web frontend application,
-take a look at https://github.com/digibyte-core/insight.
+take a look at https://github.com/ButKoin/insight.
 
-*DigiExplorer API* allows to develop digibyte-related applications (such as wallets) that 
-require certain information from the blockchain that digibyted does not provide.
+*ButExplorer API* allows to develop but-related applications (such as wallets) that 
+require certain information from the blockchain that butd does not provide.
 
-A blockchain explorer front-end has been developed on top of *DigiExplorer API*. It can
-be downloaded at [Github DigiExplorer Repository](https://github.com/digibyte-core/insight).
+A blockchain explorer front-end has been developed on top of *ButExplorer API*. It can
+be downloaded at [Github ButExplorer Repository](https://github.com/ButKoin/insight).
 
 
 ## Prerequisites
 
-* **digibyted** - Download and Install [DigiByte](https://digibyte.io/digibyte-wallet-downloads)
+* **butd** - Download and Install [ButByte](https://but.io/but-wallet-downloads)
 
-*digiexplorer API* needs a *trusted* digibyted node to run. *digiexplorer API* will connect to the node
-through the RPC API, digibyte peer-to-peer protocol, and will even read its raw block .dat files for syncing.
+*butexplorer API* needs a *trusted* butd node to run. *butexplorer API* will connect to the node
+through the RPC API, but peer-to-peer protocol, and will even read its raw block .dat files for syncing.
 
-Configure digibyted to listen to RPC calls and set `txindex` to true.
-The easiest way to do this is by copying `./etc/digibyted/digibyte.conf` to your
-digibyte data directory (usually `~/.digibyte` on Linux, `%appdata%\Bitcoin\` on Windows,
+Configure butd to listen to RPC calls and set `txindex` to true.
+The easiest way to do this is by copying `./etc/butd/but.conf` to your
+but data directory (usually `~/.but` on Linux, `%appdata%\Bitcoin\` on Windows,
 or `~/Library/Application Support/Bitcoin` on Mac OS X).
 
-digibyted must be running and must have finished downloading the blockchain **before** running *digiexplorer API*.
+butd must be running and must have finished downloading the blockchain **before** running *butexplorer API*.
 
 
 * **Node.js v0.10.x** - Download and Install [Node.js](http://www.nodejs.org/download/).
@@ -35,9 +35,9 @@ digibyted must be running and must have finished downloading the blockchain **be
 ## Quick Install
   Check the Prerequisites section above before installing.
 
-  To install DigiExplorer API, clone the main repository:
+  To install ButExplorer API, clone the main repository:
 
-    $ git clone https://github.com/digibyte-core/digiexplorer-api && cd digiexplorer-api
+    $ git clone https://github.com/ButKoin/butexplorer-api && cd butexplorer-api
 
   Install dependencies:
 
@@ -45,7 +45,7 @@ digibyted must be running and must have finished downloading the blockchain **be
 
   Run the main application:
 
-    $ node digiexplorer.js
+    $ node butexplorer.js
 
   Then open a browser and go to:
 
@@ -61,18 +61,18 @@ digibyted must be running and must have finished downloading the blockchain **be
 All configuration is specified in the [config](config/) folder, particularly the [config.js](config/config.js) file. There you can specify your application name and database name. Certain configuration values are pulled from environment variables if they are defined:
 
 ```
-DIGIBYTED_HOST         # RPC digibyted host
-DIGIBYTED_PORT         # RPC digibyted Port
-DIGIBYTED_P2P_HOST     # P2P digibyted Host (will default to DIGIBYTED_HOST, if specified)
-DIGIBYTED_P2P_PORT     # P2P digibyted Port
-DIGIBYTED_USER         # RPC username
-DIGIBYTED_PASS         # RPC password
-DIGIBYTED_DATADIR      # digibyted datadir. 'testnet3' will be appended automatically if testnet is used. NEED to finish with '/'. e.g: `/vol/data/`
-DIGIEXPLORER_NETWORK [= 'livenet' | 'testnet']
-DIGIEXPLORER_PORT          # digiexplorer api port
-DIGIEXPLORER_DB            # Path where to store digiexplorer's internal DB. (defaults to $HOME/.digiexplorer)
-DIGIEXPLORER_SAFE_CONFIRMATIONS=6  # Nr. of confirmation needed to start caching transaction information   
-DIGIEXPLORER_IGNORE_CACHE  # True to ignore cache of spents in transaction, with more than DIGIEXPLORER_SAFE_CONFIRMATIONS confirmations. This is useful for tracking double spents for old transactions.
+BUTD_HOST         # RPC butd host
+BUTD_PORT         # RPC butd Port
+BUTD_P2P_HOST     # P2P butd Host (will default to BUTD_HOST, if specified)
+BUTD_P2P_PORT     # P2P butd Port
+BUTD_USER         # RPC username
+BUTD_PASS         # RPC password
+BUTD_DATADIR      # butd datadir. 'testnet3' will be appended automatically if testnet is used. NEED to finish with '/'. e.g: `/vol/data/`
+BUTEXPLORER_NETWORK [= 'livenet' | 'testnet']
+BUTEXPLORER_PORT          # butexplorer api port
+BUTEXPLORER_DB            # Path where to store butexplorer's internal DB. (defaults to $HOME/.butexplorer)
+BUTEXPLORER_SAFE_CONFIRMATIONS=6  # Nr. of confirmation needed to start caching transaction information   
+BUTEXPLORER_IGNORE_CACHE  # True to ignore cache of spents in transaction, with more than BUTEXPLORER_SAFE_CONFIRMATIONS confirmations. This is useful for tracking double spents for old transactions.
 ENABLE_MAILBOX # if "true" will enable mailbox plugin
 ENABLE_CLEANER # if "true" will enable message db cleaner plugin
 ENABLE_MONITOR # if "true" will enable message db monitor plugin
@@ -81,37 +81,37 @@ ENABLE_RATELIMITER # if "true" will enable the ratelimiter plugin
 LOGGER_LEVEL # defaults to 'info', can be 'debug','verbose','error', etc.
 ENABLE_HTTPS # if "true" it will server using SSL/HTTPS
 ENABLE_EMAILSTORE # if "true" will enable a plugin to store data with a validated email address
-DIGIEXPLORER_EMAIL_CONFIRM_HOST # Only meanfull if ENABLE_EMAILSTORE is enable. Hostname for the confirm URLs. E.g: 'https://digiexplorer.info'
+BUTEXPLORER_EMAIL_CONFIRM_HOST # Only meanfull if ENABLE_EMAILSTORE is enable. Hostname for the confirm URLs. E.g: 'https://butexplorer.info'
 
 ```
 
-Make sure that digibyted is configured to [accept incoming connections using 'rpcallowip'](https://en.bitcoin.it/wiki/Running_Bitcoin).
+Make sure that butd is configured to [accept incoming connections using 'rpcallowip'](https://en.bitcoin.it/wiki/Running_Bitcoin).
 
 In case the network is changed (testnet to livenet or vice versa) levelDB database needs to be deleted. This can be performed running:
-```util/sync.js -D``` and waiting for *digiexplorer* to synchronize again.  Once the database is deleted, the sync.js process can be safely interrupted (CTRL+C) and continued from the synchronization process embedded in main app.
+```util/sync.js -D``` and waiting for *butexplorer* to synchronize again.  Once the database is deleted, the sync.js process can be safely interrupted (CTRL+C) and continued from the synchronization process embedded in main app.
 
 ## Synchronization
 
-The initial synchronization process scans the blockchain from the paired digibyted server to update addresses and balances. *digiexplorer-api* needs exactly one trusted digibyted node to run. This node must have finished downloading the blockchain before running *digiexplorer-api*.
+The initial synchronization process scans the blockchain from the paired butd server to update addresses and balances. *butexplorer-api* needs exactly one trusted butd node to run. This node must have finished downloading the blockchain before running *butexplorer-api*.
 
-While *digiexplorer* is synchronizing the website can be accessed (the sync process is embedded in the webserver), but there may be missing data or incorrect balances for addresses. The 'sync' status is shown at the `/api/sync` endpoint.
+While *butexplorer* is synchronizing the website can be accessed (the sync process is embedded in the webserver), but there may be missing data or incorrect balances for addresses. The 'sync' status is shown at the `/api/sync` endpoint.
 
-The blockchain can be read from digibyted's raw `.dat` files or RPC interface. 
+The blockchain can be read from butd's raw `.dat` files or RPC interface. 
 Reading the information from the `.dat` files is much faster so it's the
 recommended (and default) alternative. `.dat` files are scanned in the default
-location for each platform (for example, `~/.digibyte` on Linux). In case a
+location for each platform (for example, `~/.but` on Linux). In case a
 non-standard location is used, it needs to be defined (see the Configuration section).
 As of June 2014, using `.dat` files the sync process takes 9 hrs.
 for livenet and 30 mins. for testnet.
 
-While synchronizing the blockchain, *digiexplorer-api* listens for new blocks and
-transactions relayed by the digibyted node. Those are also stored on *digiexplorer-api*'s database.
-In case *digiexplorer-api* is shutdown for a period of time, restarting it will trigger
+While synchronizing the blockchain, *butexplorer-api* listens for new blocks and
+transactions relayed by the butd node. Those are also stored on *butexplorer-api*'s database.
+In case *butexplorer-api* is shutdown for a period of time, restarting it will trigger
 a partial (historic) synchronization of the blockchain. Depending on the size of
 that synchronization task, a reverse RPC or forward `.dat` syncing strategy will be used.
 
-If digibyted is shutdown, *digiexplorer-api* needs to be stopped and restarted
-once digibyted is restarted.
+If butd is shutdown, *butexplorer-api* needs to be stopped and restarted
+once butd is restarted.
 
 ### Syncing old blockchain data manually
 
@@ -122,24 +122,24 @@ once digibyted is restarted.
   Check util/sync.js --help for options, particulary -D to erase the current DB.
 
   *NOTE*: there is no need to run this manually since the historic synchronization
-  is built in into the web application. Running *digiexplorer-api* normally will trigger
+  is built in into the web application. Running *butexplorer-api* normally will trigger
   the historic sync automatically.
 
 
 ### DB storage requirement
 
-To store the blockchain and address related information, *digiexplorer-api* uses LevelDB.
+To store the blockchain and address related information, *butexplorer-api* uses LevelDB.
 Two DBs are created: txs and blocks. By default these are stored on
 
-  ``~/.digiexplorer/``
+  ``~/.butexplorer/``
 
-Please note that some older versions of DigiExplorer-API store that on `<digiexplorer's root>/db`.
+Please note that some older versions of ButExplorer-API store that on `<butexplorer's root>/db`.
 
 This can be changed at config/config.js. As of June 2014, storing the livenet blockchain takes ~35GB of disk space (2GB for the testnet).
 
 ## Development
 
-To run digiexplorer locally for development with grunt:
+To run butexplorer locally for development with grunt:
 
 ```$ NODE_ENV=development grunt```
 
@@ -148,12 +148,12 @@ To run the tests
 ```$ grunt test```
 
 
-Contributions and suggestions are welcome at [digiexplorer-api github repository](https://github.com/digibyte-core/digiexplorer-api).
+Contributions and suggestions are welcome at [butexplorer-api github repository](https://github.com/ButKoin/butexplorer-api).
 
 ## Caching schema
 
 Since v0.2 a new cache schema has been introduced. Only information from transactions with
-DIGIEXPLORER_SAFE_CONFIRMATIONS settings will be cached (by default SAFE_CONFIRMATIONS=6). There 
+BUTEXPLORER_SAFE_CONFIRMATIONS settings will be cached (by default SAFE_CONFIRMATIONS=6). There 
 are 3 different caches:
  * Number of confirmations 
  * Transaction output spent/unspent status
@@ -161,12 +161,12 @@ are 3 different caches:
 
 Cache data is only populated on request, i.e., only after accessing the required data for
 the first time, the information is cached, there is not pre-caching procedure.  To ignore 
-cache by default, use DIGIEXPLORER_IGNORE_CACHE. Also, address related calls support `?noCache=1`
+cache by default, use BUTEXPLORER_IGNORE_CACHE. Also, address related calls support `?noCache=1`
 to ignore the cache in a particular API request.
 
 ## API
 
-By default, digiexplorer provides a REST API at `/api`, but this prefix is configurable from the var `apiPrefix` in the `config.js` file.
+By default, butexplorer provides a REST API at `/api`, but this prefix is configurable from the var `apiPrefix` in the `config.js` file.
 
 The end-points are:
 
@@ -222,7 +222,7 @@ Sample return:
     }
 ]
 ```
-Please note that in case confirmations are cached (which happens by default when the number of confirmations is bigger that DIGIEXPLORER_SAFE_CONFIRMATIONS) the response will include the pair confirmationsFromCache:true, and confirmations will equal DIGIEXPLORER_SAFE_CONFIRMATIONS. See noCache and DIGIEXPLORER_IGNORE_CACHE options for details.
+Please note that in case confirmations are cached (which happens by default when the number of confirmations is bigger that BUTEXPLORER_SAFE_CONFIRMATIONS) the response will include the pair confirmationsFromCache:true, and confirmations will equal BUTEXPLORER_SAFE_CONFIRMATIONS. See noCache and BUTEXPLORER_IGNORE_CACHE options for details.
 
 
 
@@ -341,7 +341,7 @@ POST response:
   /api/peer
 ```
 
-### Status of the digibyte network
+### Status of the but network
 ```
   /api/status?q=xxx
 ```
@@ -357,7 +357,7 @@ Where "xxx" can be:
 ## Web Socket API
 The web socket API is served using [socket.io](http://socket.io).
 
-The following are the events published by digiexplorer:
+The following are the events published by butexplorer:
 
 'tx': new transaction received from network. This event is published in the 'inv' room. Data will be a app/models/Transaction object.
 Sample output:
@@ -380,7 +380,7 @@ Sample output:
 }
 ```
 
-'<digibyteAddress>': new transaction concerning <digibyteAddress> received from network. This event is published in the '<digibyteAddress>' room.
+'<butAddress>': new transaction concerning <butAddress> received from network. This event is published in the '<butAddress>' room.
 
 'status': every 1% increment on the sync task, this event will be triggered. This event is published in the 'sync' room.
 
@@ -400,18 +400,18 @@ Sample output:
 
 ### Example Usage
 
-The following html page connects to the socket.io digiexplorer API and listens for new transactions.
+The following html page connects to the socket.io butexplorer API and listens for new transactions.
 
 html
 ```
 <html>
 <body>
-  <script src="http://<digiexplorer-server>:<port>/socket.io/socket.io.js"></script>
+  <script src="http://<butexplorer-server>:<port>/socket.io/socket.io.js"></script>
   <script>
     eventToListenTo = 'tx'
     room = 'inv'
 
-    var socket = io("http://<digiexplorer-server>:<port>/");
+    var socket = io("http://<butexplorer-server>:<port>/");
     socket.on('connect', function() {
       // Join the room.
       socket.emit('subscribe', room);

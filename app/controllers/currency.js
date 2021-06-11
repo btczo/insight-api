@@ -40,7 +40,7 @@ exports.index = async (req, res) => {
     const currentTime = +new Date();
     if (usdRate === 0 || currentTime >= (timestamp + delay)) {
       timestamp = currentTime;
-      const data = await _request('http://coinmarketcap-nexuist.rhcloud.com/api/dgb');
+      const data = await _request('http://coinmarketcap-nexuist.rhcloud.com/api/butk');
       res.jsonp({
         status: 200,
         data: { bitstamp: usdRate }

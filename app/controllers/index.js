@@ -10,7 +10,7 @@ const render = (req, res) => {
     return res.sendfile(config.publicPath + '/index.html');
   } else {
     const version = _getVersion();
-    res.send('digiexplorer API v' + version);
+    res.send('butkexplorer API v' + version);
   }
 }
 

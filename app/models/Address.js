@@ -1,4 +1,4 @@
-const digibyte = require('digibyte');
+const but = require('but');
 const config = require('../../config/config');
 const TransactionDb = require('../../lib/TransactionDb');
 const BlockDb = require('../../lib/BlockDb');
@@ -16,40 +16,40 @@ class Address {
     this.transactions = [];
     this.unspent = [];
 
-    const a = new digibyte.Address(addrStr);
+    const a = new but.Address(addrStr);
     this.addrStr = addrStr;
   }
 
   get totalSent() {
-    return digibyte.Unit.fromSatoshis(this.totalSentSat).toDGB();
+    return but.Unit.fromSatoshis(this.totalSentSat).toBUT();
   }
 
   set totalSent(value) {
-    this.totalSentSat = digibyte.Unit.fromDGB(value).toSatoshis();
+    this.totalSentSat = but.Unit.fromBUT(value).toSatoshis();
   }
 
   get balance() {
-    return digibyte.Unit.fromSatoshis(this.balanceSat).toDGB();
+    return but.Unit.fromSatoshis(this.balanceSat).toBUT();
   }
 
   set balance(value) {
-    this.balance = digibyte.Unit.fromDGB(value).toSatoshis();
+    this.balance = but.Unit.fromBUT(value).toSatoshis();
   }
 
   get totalReceived () {
-    return digibyte.Unit.fromSatoshis(this.totalReceivedSat).toDGB();
+    return but.Unit.fromSatoshis(this.totalReceivedSat).toBUT();
   }
 
   set totalReceived(value) {
-    this.totalReceived = digibyte.Unit.fromDGB(value).toSatoshis();
+    this.totalReceived = but.Unit.fromBUT(value).toSatoshis();
   }
 
   get unconfirmedBalance() {
-    return  digibyte.Unit.fromSatoshis(this.unconfirmedBalanceSat).toDGB();
+    return  but.Unit.fromSatoshis(this.unconfirmedBalanceSat).toBUT();
   }
 
   set unconfirmedBalance(value) {
-    this.unconfirmedBalanceSat =  digibyte.Unit.fromDGB(value).toSatoshis();
+    this.unconfirmedBalanceSat =  but.Unit.fromBUT(value).toSatoshis();
   }
 
   getObj () {
@@ -141,7 +141,7 @@ class Address {
           vout: x.index,
           ts: x.ts,
           scriptPubKey: x.scriptPubKey,
-          amount: digibyte.Unit.fromSatoshis(x.value_sat).toDGB(),
+          amount: but.Unit.fromSatoshis(x.value_sat).toBUT(),
           confirmations: x.isConfirmedCached ? (config.safeConfirmations) : x.confirmations,
           confirmationsFromCache: !!x.isConfirmedCached,
         };

@@ -16,22 +16,22 @@ const getUserHome = () => {
   return process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
 }
 
-const home = process.env.DIGIEXPLORER_DB || (getUserHome() + '/.digiexplorer');
+const home = process.env.BUTEXPLORER_DB || (getUserHome() + '/.butexplorer');
 
-if (process.env.DIGIEXPLORER_NETWORK === 'livenet') {
+if (process.env.BUTEXPLORER_NETWORK === 'livenet') {
   env = 'livenet';
   db = home;
   port = '3000';
-  b_port = '14022';
-  p2p_port = '12024';
+  b_port = '9998';
+  p2p_port = '24240';
 } else {
   env = 'testnet';
   db = home + '/testnet';
   port = '3001';
-  b_port = '14023';
-  p2p_port = '12026';
+  b_port = '19998';
+  p2p_port = '34340';
 }
-port = parseInt(process.env.DIGIEXPLORER_PORT) || port;
+port = parseInt(process.env.BUTEXPLORER_PORT) || port;
 
 switch (process.env.NODE_ENV) {
   case 'production':
@@ -45,29 +45,29 @@ switch (process.env.NODE_ENV) {
     break;
 }
 
-const network = process.env.DIGIEXPLORER_NETWORK || 'testnet';
-let dataDir = process.env.DIGIBYTED_DATADIR;
+const network = process.env.BUTEXPLORER_NETWORK || 'testnet';
+let dataDir = process.env.BUTD_DATADIR;
 const isWin = /^win/.test(process.platform);
 const isMac = /^darwin/.test(process.platform);
 const isLinux = /^linux/.test(process.platform);
 if (!dataDir) {
-  if (isWin) dataDir = '%APPDATA%\\Digibyte\\';
-  if (isMac) dataDir = process.env.HOME + '/Library/Application Support/Digibyte/';
-  if (isLinux) dataDir = process.env.HOME + '/.digibyte/';
+  if (isWin) dataDir = '%APPDATA%\\But\\';
+  if (isMac) dataDir = process.env.HOME + '/Library/Application Support/But/';
+  if (isLinux) dataDir = process.env.HOME + '/.but/';
 }
 dataDir += network === 'testnet' ? 'testnet4' : '';
 
-const safeConfirmations = process.env.DIGIEXPLORER_SAFE_CONFIRMATIONS || 6;
-const ignoreCache = process.env.DIGIEXPLORER_IGNORE_CACHE || 0;
+const safeConfirmations = process.env.BUTEXPLORER_SAFE_CONFIRMATIONS || 6;
+const ignoreCache = process.env.BUTEXPLORER_IGNORE_CACHE || 0;
 
-digibytedConf = {
-  protocol: process.env.DIGIBYTED_PROTO || 'http',
-  user: process.env.DIGIBYTED_USER || 'user',
-  pass: process.env.DIGIBYTED_PASS || 'password',
-  host: process.env.DIGIBYTED_HOST || '127.0.0.1',
-  port: process.env.DIGIBYTED_PORT || b_port,
-  p2pPort: process.env.DIGIBYTED_P2P_PORT || p2p_port,
-  p2pHost: process.env.DIGIBYTED_P2P_HOST || process.env.DIGIBYTED_HOST || '127.0.0.1',
+butdConf = {
+  protocol: process.env.BUTD_PROTO || 'http',
+  user: process.env.BUTD_USER || 'user',
+  pass: process.env.BUTD_PASS || 'password',
+  host: process.env.BUTD_HOST || '127.0.0.1',
+  port: process.env.BUTD_PORT || b_port,
+  p2pPort: process.env.BUTD_P2P_PORT || p2p_port,
+  p2pHost: process.env.BUTD_P2P_HOST || process.env.BUTD_HOST || '127.0.0.1',
   dataDir: dataDir,
   // DO NOT CHANGE THIS!
   disableAgent: true
@@ -109,12 +109,12 @@ module.exports = {
   enableHTTPS: enableHTTPS,
   version: version,
   root: rootPath,
-  publicPath: process.env.DIGIEXPLORER_PUBLIC_PATH || false,
-  appName: 'DigiExplorer ' + env,
+  publicPath: process.env.BUTEXPLORER_PUBLIC_PATH || false,
+  appName: 'ButkExplorer ' + env,
   apiPrefix: '/api',
   port: port,
   leveldb: db,
-  digibyted: digibytedConf,
+  butd: butdConf,
   network: network,
   disableP2pSync: false,
   disableHistoricSync: false,
@@ -123,7 +123,7 @@ module.exports = {
   // Time to refresh the currency rate. In minutes
   currencyRefresh: 10,
   keys: {
-    segmentio: process.env.DIGIEXPLORER_SEGMENTIO_KEY
+    segmentio: process.env.BUTEXPLORER_SEGMENTIO_KEY
   },
   safeConfirmations: safeConfirmations, // PLEASE NOTE THAT *FULL RESYNC* IS NEEDED TO CHANGE safeConfirmations
   ignoreCache: ignoreCache,

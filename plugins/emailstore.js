@@ -7,7 +7,7 @@
 
   var _ = require('lodash');
   var async = require('async');
-  var bitcore = require('digibyte');
+  var bitcore = require('but');
   var crypto = require('crypto');
   var fs = require('fs');
   var levelup = require('levelup');
@@ -114,11 +114,11 @@
     emailPlugin.crypto = config.crypto || crypto;
 
     emailPlugin.confirmUrl = (
-      process.env.DIGIEXPLORER_EMAIL_CONFIRM_HOST || config.confirmUrl || 'https://digiexplorer.info'
+      process.env.BUTEXPLORER_EMAIL_CONFIRM_HOST || config.confirmUrl || 'https://xplorer.butcoin.tech'
     ) + globalConfig.apiPrefix + '/email/validate';
 
     emailPlugin.redirectUrl = (
-      config.redirectUrl || 'https://dgbwallet.com/in/app#!/confirmed'
+      config.redirectUrl || 'https://wallet.butcoin.tech/in/app#!/confirmed'
     );
   };
 
@@ -169,9 +169,9 @@
       var emailBody = results[0];
       var emailBodyHTML = results[1];
       var mailOptions = {
-        from: 'DGBWallet@dgbwallet.com',
+        from: 'butwallet@butcoin.tech',
         to: email,
-        subject: '[DGBWallet] Your wallet backup needs confirmation',
+        subject: '[BUTWallet] Your wallet backup needs confirmation',
         text: emailBody,
         html: emailBodyHTML
       };

@@ -14,30 +14,30 @@ program
 
 program.on('--help', () => {
   logger.info('\n# Configuration:\n\
-\tDIGIEXPLORER_NETWORK (Network): %s\n\
-\tDIGIEXPLORER_DB (Database Path):  %s\n\
-\tDIGIEXPLORER_SAFE_CONFIRMATIONS (Safe Confirmations):  %s\n\
-\tDIGIEXPLORER_IGNORE_CACHE (Ignore Cache):  %s\n\
+\tBUTEXPLORER_NETWORK (Network): %s\n\
+\tBUTEXPLORER_DB (Database Path):  %s\n\
+\tBUTEXPLORER_SAFE_CONFIRMATIONS (Safe Confirmations):  %s\n\
+\tBUTEXPLORER_IGNORE_CACHE (Ignore Cache):  %s\n\
  # Bicoind Connection configuration:\n\
-\tRPC Username: %s\t\tDIGIBYTED_USER\n\
-\tRPC Password: %s\tDIGIBYTED_PASS\n\
-\tRPC Protocol: %s\t\tDIGIBYTED_PROTO\n\
-\tRPC Host: %s\t\tDIGIBYTED_HOST\n\
-\tRPC Port: %s\t\t\tDIGIBYTED_PORT\n\
-\tP2P Port: %s\t\t\tDIGIBYTED_P2P_PORT\n\
-\tDIGIBYTED_DATADIR: %s\n\
+\tRPC Username: %s\t\tBUTD_USER\n\
+\tRPC Password: %s\tBUTD_PASS\n\
+\tRPC Protocol: %s\t\tBUTD_PROTO\n\
+\tRPC Host: %s\t\tBUTD_HOST\n\
+\tRPC Port: %s\t\t\tBUTD_PORT\n\
+\tP2P Port: %s\t\t\tBUTD_P2P_PORT\n\
+\tBUTD_DATADIR: %s\n\
 \t%s\n\
 \nChange setting by assigning the enviroment variables above. Example:\n\
- $ DIGIEXPLORER_NETWORK="testnet" DIGIBYTED_HOST="123.123.123.123" ./digiexplorer.js\
+ $ BUTEXPLORER_NETWORK="testnet" BUTD_HOST="123.123.123.123" ./butexplorer.js\
 \n\n',
     config.network, config.leveldb, config.safeConfirmations, config.ignoreCache ? 'yes' : 'no',
-    config.digibyted.user,
-    config.digibyted.pass ? 'Yes(hidden)' : 'No',
-    config.digibyted.protocol,
-    config.digibyted.host,
-    config.digibyted.port,
-    config.digibyted.p2pPort,
-    config.digibyted.dataDir + (config.network === 'testnet' ? '*' : ''), (config.network === 'testnet' ? '* (/testnet3 is added automatically)' : '')
+    config.butd.user,
+    config.butd.pass ? 'Yes(hidden)' : 'No',
+    config.butd.protocol,
+    config.butd.host,
+    config.butd.port,
+    config.butd.p2pPort,
+    config.butd.dataDir + (config.network === 'testnet' ? '*' : ''), (config.network === 'testnet' ? '* (/testnet3 is added automatically)' : '')
   );
 });
 
@@ -148,7 +148,7 @@ require('./config/routes')(expressApp);
 
 //Start the app by listening on <port>
 server.listen(config.port, () => {
-  logger.info(`digiexplorer server listening on port ${server.address().port} in ${process.env.NODE_ENV} mode`);
+  logger.info(`butexplorer server listening on port ${server.address().port} in ${process.env.NODE_ENV} mode`);
 });
 
 //expose app

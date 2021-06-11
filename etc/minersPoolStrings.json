@@ -21,24 +21,24 @@
      ]
   },
      {
-     "poolName":"skpool",
-     "url":"#",
+     "poolName":"rplant",
+     "url":"https://pool.rplant.xyz/",
      "searchStrings":[
-        "skpool"
+        "rplant"
      ]
   },
   {
-     "poolName":"who",
-     "url":"#",
+     "poolName":"miner123",
+     "url":"https://miner123.win/",
      "searchStrings":[
-        "who"
+        "miner123"
      ]
   },
   {
-     "poolName":"sapool",
-     "url":"#",
+     "poolName":"suprnova",
+     "url":"https://butk-gr.suprnova.cc/",
      "searchStrings":[
-        "sapool"
+        "suprnova"
      ]
   },
   {
@@ -64,17 +64,17 @@
   },
 
   {
-     "poolName":"Unknown p2pool-DGB",
-     "url":"https://github.com/mcpool/p2pool-dgb",
+     "poolName":"murkapool",
+     "url":"https://murkapool.it/",
      "searchStrings":[
-        "p2pool-DGB"
+        "murkapool"
      ]
   },
   {
-     "poolName":"dgb256.online",
-     "url":"https://dgb256.online/",
+     "poolName":"myminingpool",
+     "url":"https://myminingpool.uk/",
      "searchStrings":[
-        "dgb256.online"
+        "myminingpool"
      ]
   },
   {
@@ -107,10 +107,10 @@
   }, 
   { 
  
-     "poolName":"DigiHash",
-     "url":"http://digihash.co",
+     "poolName":"ButHash",
+     "url":"http://buthash.co",
      "searchStrings":[
-        "DigiHash"
+        "ButHash"
      ]   
   }, 
   {
